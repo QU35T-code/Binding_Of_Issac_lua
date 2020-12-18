@@ -16,20 +16,20 @@ end
 
 function Module.keypressed_my_pause(key)
 	if (key == Keybinds.up and pause_pointeurY == 445) then
-  		pause_pointeurY = 445
-  	elseif (key == Keybinds.up and pause_pointeurY == 510) then
-  		pause_pointeurY = 445
-  	elseif (key == Keybinds.up and pause_pointeurY == 564) then
-  		pause_pointeurY = 510
-  	end
+  	pause_pointeurY = 445
+  elseif (key == Keybinds.up and pause_pointeurY == 510) then
+		pause_pointeurY = 445
+  elseif (key == Keybinds.up and pause_pointeurY == 564) then
+  	pause_pointeurY = 510
+  end
 
 	if (key == Keybinds.down and pause_pointeurY == 445) then
-  		pause_pointeurY = 510
-  	elseif (key == Keybinds.down and pause_pointeurY == 510) then
-  		pause_pointeurY = 564
-  	elseif (key == Keybinds.down and pause_pointeurY == 564) then
-  		pause_pointeurY = 564
-  	end
+  	pause_pointeurY = 510
+  elseif (key == Keybinds.down and pause_pointeurY == 510) then
+  	pause_pointeurY = 564
+  elseif (key == Keybinds.down and pause_pointeurY == 564) then
+  	pause_pointeurY = 564
+  end
 end
 
 return Module

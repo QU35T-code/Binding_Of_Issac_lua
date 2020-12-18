@@ -29,10 +29,14 @@ function init_my_game()
 	gameState.preMenu = true
 	gameState.menu = false
 	gameState.pause = false
+	gameState.options = false
 	gameState.game = false
 	gameState.gameOver = false
 	pause_pointeurX = 570
-	pause_pointeurY = 510 --[[445 UP--]] --[[510 Center--]] --[[564 DOWN--]]
+	pause_pointeurY = 510
+	menu_pointeurX = 455
+	menu_pointeurY = 177
+	menu_check_keyreleased = 1
 end
 
 
@@ -59,9 +63,15 @@ function love.keypressed(key)
 		filePreMenu.keypressed_my_preMenu(key)
 	end
 	if gameState.menu then
-		fileMenu.keypressed_my_Menu()
+		fileMenu.keypressed_my_Menu(key)
 	end
 	if gameState.pause then
 		filePause.keypressed_my_pause(key)
+	end
+end
+
+function love.keyreleased(key)
+	if gameState.menu then
+		fileMenu.keyreleased_my_Menu(key)
 	end
 end
