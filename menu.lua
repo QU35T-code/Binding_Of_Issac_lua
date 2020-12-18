@@ -3,7 +3,7 @@ local Module = {}
 function Module.load_my_Menu()
 	MenuBackground = love.graphics.newImage("assets/Scenes/Menu/background.png")
 	MenuPointeur = love.graphics.newImage("assets/Scenes/Menu/pointeur.png")
-	MenuLabels = love.graphics.newImage("assets/Scenes/Menu/labels4.png")
+	MenuLabels = love.graphics.newImage("assets/Scenes/Menu/labels.png")
 	MenuResumeNot = love.graphics.newImage("assets/Scenes/Menu/resumeNot.png")
 end
 

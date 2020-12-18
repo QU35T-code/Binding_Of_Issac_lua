@@ -13,7 +13,9 @@ require("config")
 
 local filePause = require("pause")
 local filePreMenu = require("preMenu")
+local fileGameOver = require("gameOver")
 local fileMenu = require("menu")
+local fileOptions = require("options")
 
 function love.load()
   screen_width = love.graphics.getWidth()
@@ -22,14 +24,16 @@ function love.load()
   filePreMenu.load_my_preMenu()
   fileMenu.load_my_Menu()
   filePause.load_my_pause()
+  fileOptions.load_my_options()
+  fileGameOver.load_my_GameOver()
 end
 
 function init_my_game()
 	gameState = {}
-	gameState.preMenu = true
+	gameState.preMenu = false
 	gameState.menu = false
 	gameState.pause = false
-	gameState.options = false
+	gameState.options = true
 	gameState.game = false
 	gameState.gameOver = false
 	pause_pointeurX = 570
@@ -55,7 +59,13 @@ function love.draw()
 	if gameState.pause then
 		filePause.draw_my_pause()		
 	end
-    
+	if gameState.options then
+		fileOptions.draw_my_options()		
+	end
+	if gameState.gameOver then
+		fileGameOver.draw_my_GameOver()		
+	end
+
 end
 
 function love.keypressed(key)
@@ -67,6 +77,12 @@ function love.keypressed(key)
 	end
 	if gameState.pause then
 		filePause.keypressed_my_pause(key)
+	end
+	if gameState.options then
+		fileOptions.keypressed_my_options(key)		
+	end
+	if gameState.gameOver then
+		fileGameOver.keypressed_my_GameOver(key)		
 	end
 end
 
