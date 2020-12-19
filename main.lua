@@ -16,7 +16,7 @@ local filePreMenu = require("preMenu")
 local fileGameOver = require("gameOver")
 local fileMenu = require("menu")
 local fileOptions = require("options")
-local fileGame = require("game")
+local filePlayerCreation = require("player_creation")
 
 function love.load()
   screen_width = love.graphics.getWidth()
@@ -27,7 +27,7 @@ function love.load()
   filePause.load_my_pause()
   fileOptions.load_my_options()
   fileGameOver.load_my_GameOver()
-  fileGame.load_my_Game()
+  filePlayerCreation.load_my_Player()
 end
 
 function init_my_game()
@@ -50,7 +50,7 @@ end
 
 function love.update(dt)
 	filePreMenu.update_my_preMenu(dt)
-	fileGame.update_my_Game(dt)
+	filePlayerCreation.update_my_Player(dt)
 
 end
 
@@ -71,7 +71,7 @@ function love.draw()
 		fileGameOver.draw_my_GameOver()		
 	end
 	if gameState.game then
-		fileGame.draw_my_Game()		
+		filePlayerCreation.draw_my_Player()		
 	end
 
 end
@@ -93,12 +93,15 @@ function love.keypressed(key)
 		fileGameOver.keypressed_my_GameOver(key)		
 	end
 	if gameState.game then
-		fileGame.keypressed_my_Game()		
+		filePlayerCreation.keypressed_my_Player(key)		
 	end
 end
 
 function love.keyreleased(key)
 	if gameState.menu then
 		fileMenu.keyreleased_my_Menu(key)
+	end
+	if gameState.game then
+		filePlayerCreation.keyreleased_my_Player(key)
 	end
 end
