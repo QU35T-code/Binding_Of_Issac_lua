@@ -27,7 +27,7 @@ function love.load()
   filePause.load_my_pause()
   fileOptions.load_my_options()
   fileGameOver.load_my_GameOver()
-  filePlayerCreation.load_my_Player()
+  filePlayerCreation.create_my_Player("Unknown")
 end
 
 function init_my_game()
