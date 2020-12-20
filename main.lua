@@ -17,6 +17,7 @@ local fileGameOver = require("gameOver")
 local fileMenu = require("menu")
 local fileOptions = require("options")
 local filePlayerCreation = require("player_creation")
+local fileMonsterCreation = require("monster_creation")
 
 function love.load()
   screen_width = love.graphics.getWidth()
@@ -28,6 +29,7 @@ function love.load()
   fileOptions.load_my_options()
   fileGameOver.load_my_GameOver()
   filePlayerCreation.create_my_Player("Unknown")
+  fileMonsterCreation.load_my_Monster("oeil", 5)
 end
 
 function init_my_game()
@@ -49,8 +51,13 @@ end
 
 
 function love.update(dt)
-	filePreMenu.update_my_preMenu(dt)
-	filePlayerCreation.update_my_Player(dt)
+	if gameState.preMenu then
+		filePreMenu.update_my_preMenu(dt)
+	end
+	if gameState.game then
+		filePlayerCreation.update_my_Player(dt)
+		fileMonsterCreation.update_my_Monster(dt)
+	end
 
 end
 
@@ -79,6 +86,7 @@ function love.draw()
 		love.graphics.print("Cadence de tir : " .. playerStats.rate, 0, 36)
 		love.graphics.print("Dégâts : " .. playerStats.damage, 0, 48)
 		love.graphics.print("Chance : " .. playerStats.luck, 0, 60)
+		fileMonsterCreation.draw_my_Monster()
 	end
 
 end
@@ -100,7 +108,7 @@ function love.keypressed(key)
 		fileGameOver.keypressed_my_GameOver(key)		
 	end
 	if gameState.game then
-		filePlayerCreation.keypressed_ok(key)
+		fileMonsterCreation.keyok(key)
 	end
 end
 

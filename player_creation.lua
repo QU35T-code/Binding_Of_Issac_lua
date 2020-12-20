@@ -31,8 +31,6 @@ animation_head_settings.frameWidth = 32
 animation_head_settings.frameHeight = 28
 animation_head_settings.totalFrames = 1
 animation_head_settings.currentFrame = 1
---[[animation_head_settings.speed = 0.1
-animation_head_settings.timePassed = 0--]]
 
 
 -- Variables Animation Body
@@ -53,6 +51,7 @@ playerStats = {}
 playerStats.table = {}
 
 -- Cadence de tir variables
+
 countSecond = 0
 canShoot = true
 
@@ -171,12 +170,6 @@ function distance ( x1, y1, x2, y2 )
   return math.sqrt ( dx * dx + dy * dy )
 end
 
-function Module.keypressed_ok(key)
-	if (key == "m") then
-  		print(distance(gameCharacter.x, gameCharacter.y, bullets.x, bullets.y))
-	end
-end
-
 function movement_animation(dt)
 	if (state.body_up) then
 		timePassed(dt)
@@ -266,7 +259,7 @@ function Module.update_my_Player(dt)
     	bullets.y = bullets.y + bullets.speed * math.sin(bullets.direction) * dt
 
     	-- Portée des larmes
-	  	bullets.distance = distance(gameCharacter.x, gameCharacter.y, bullets.x, bullets.y)
+	  	bullets.distance = distance(bullets.position_startX, bullets.position_startY, bullets.x, bullets.y)
 	  	if (bullets.distance > playerStats.tearsScope) then
 	  		table.remove(bulletsList, bulletId)
 	  	end
@@ -334,7 +327,9 @@ function shoot(x, y)
   	bullets.h = 30
   	bullets.r = 15
   	bullets.x = gameCharacter.x - bullets.w/2
+  	bullets.position_startX = gameCharacter.x - bullets.w/2
   	bullets.y = gameCharacter.y - bullets.h/2
+  	bullets.position_startY = gameCharacter.y - bullets.h/2
   	bullets.speed = playerStats.tearsSpeed * 300
   	bullets.direction = math.atan2(y - gameCharacter.y, x - gameCharacter.x)
   	bullets.distance = 0
