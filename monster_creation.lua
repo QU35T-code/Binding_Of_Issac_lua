@@ -18,13 +18,6 @@ function Module.load_my_Monster(monster_name, nb_monsters)
   end
 end
 
-function Module.keyok(key)
-	if (key == "m") then
-    	print("Direction : " .. monsters.direction)
-      print(#monsterList)   
-	end
-end
-
 function Module.update_my_Monster(dt)
   	for monsterId, monster in ipairs(monsterList) do
       monster.direction = math.atan2(gameCharacter.y + 20 - monster.y, gameCharacter.x + 13 - monster.x)

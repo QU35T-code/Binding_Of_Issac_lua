@@ -15,6 +15,7 @@ function Module.load_my_options()
 	optionsSelect = love.graphics.newImage("assets/Scenes/Options/select.png")
 	optionsOverlay = love.graphics.newImage("assets/Scenes/Options/overlay.png")
 	optionsShadow = love.graphics.newImage("assets/Scenes/Options/shadow.png")
+  attente = true
 end
 
 function Module.draw_my_options()
@@ -35,55 +36,71 @@ end
 function Module.keypressed_my_options(key)
 	if (key == Keybinds.up and options_pointeurY == 179) then
 		options_pointeurX = 442
-  		options_pointeurY = 179
-  	elseif (key == Keybinds.up and options_pointeurY == 247) then
-  		options_pointeurX = 442
+  	options_pointeurY = 179
+  elseif (key == Keybinds.up and options_pointeurY == 247) then
+  	options_pointeurX = 442
 		options_pointeurY = 179
-  	elseif (key == Keybinds.up and options_pointeurY == 303) then
-  		options_pointeurX = 390
-  		options_pointeurY = 247
-  	elseif (key == Keybinds.up and options_pointeurY == 359) then
-  		options_pointeurX = 390
-  		options_pointeurY = 303
-  	elseif (key == Keybinds.up and options_pointeurY == 415) then
-  		options_pointeurX = 367
-  		options_pointeurY = 359
-  	elseif (key == Keybinds.up and options_pointeurY == 478) then
-  		options_pointeurX = 367
-  		options_pointeurY = 415
-  	elseif (key == Keybinds.up and options_pointeurY == 535) then
-  		options_pointeurX = 367
-  		options_pointeurY = 478
-  	elseif (key == Keybinds.up and options_pointeurY == 597) then
-  		options_pointeurX = 367
-  		options_pointeurY = 535
-  	end
+  elseif (key == Keybinds.up and options_pointeurY == 303) then
+  	options_pointeurX = 390
+  	options_pointeurY = 247
+  elseif (key == Keybinds.up and options_pointeurY == 359) then
+  	options_pointeurX = 390
+  	options_pointeurY = 303
+  elseif (key == Keybinds.up and options_pointeurY == 415) then
+  	options_pointeurX = 367
+  	options_pointeurY = 359
+  elseif (key == Keybinds.up and options_pointeurY == 478) then
+  	options_pointeurX = 367
+  	options_pointeurY = 415
+  elseif (key == Keybinds.up and options_pointeurY == 535) then
+    options_pointeurX = 367
+  	options_pointeurY = 478
+  elseif (key == Keybinds.up and options_pointeurY == 597) then
+  	options_pointeurX = 367
+  	options_pointeurY = 535
+  end
 
-  	if (key == Keybinds.down and options_pointeurY == 179) then
+  if (key == Keybinds.down and options_pointeurY == 179) then
 		options_pointeurX = 390
-  		options_pointeurY = 247
-  	elseif (key == Keybinds.down and options_pointeurY == 247) then
-  		options_pointeurX = 390
+  	options_pointeurY = 247
+  elseif (key == Keybinds.down and options_pointeurY == 247) then
+  	options_pointeurX = 390
 		options_pointeurY = 303
-  	elseif (key == Keybinds.down and options_pointeurY == 303) then
-  		options_pointeurX = 357
-  		options_pointeurY = 359
-  	elseif (key == Keybinds.down and options_pointeurY == 359) then
-  		options_pointeurX = 367
-  		options_pointeurY = 415
-  	elseif (key == Keybinds.down and options_pointeurY == 415) then
-  		options_pointeurX = 367
-  		options_pointeurY = 478
-  	elseif (key == Keybinds.down and options_pointeurY == 478) then
-  		options_pointeurX = 380
-  		options_pointeurY = 535
-  	elseif (key == Keybinds.down and options_pointeurY == 535) then
-  		options_pointeurX = 380
-  		options_pointeurY = 597
-  	elseif (key == Keybinds.down and options_pointeurY == 597) then
-  		options_pointeurX = 380
-  		options_pointeurY = 597
-  	end
+  elseif (key == Keybinds.down and options_pointeurY == 303) then
+  	options_pointeurX = 357
+  	options_pointeurY = 359
+  elseif (key == Keybinds.down and options_pointeurY == 359) then
+  	options_pointeurX = 367
+  	options_pointeurY = 415
+  elseif (key == Keybinds.down and options_pointeurY == 415) then
+  	options_pointeurX = 367
+  	options_pointeurY = 478
+  elseif (key == Keybinds.down and options_pointeurY == 478) then
+  	options_pointeurX = 380
+  	options_pointeurY = 535
+  elseif (key == Keybinds.down and options_pointeurY == 535) then
+  	options_pointeurX = 380
+  	options_pointeurY = 597
+  elseif (key == Keybinds.down and options_pointeurY == 597) then
+  	options_pointeurX = 380
+  	options_pointeurY = 597
+  end
+
+  if (key == 'return' and options_pointeurY == 247) then
+    print("up : ")
+    function love.keyreleased(key)
+      if (key == 'return') then
+        attente = false
+      end
+    end
+  end
+
+  if (attente == false) then
+      Keybinds.up = key
+      print("correcty assign : " .. Keybinds.up)
+      attente = true
+  end
+
 end
 
 return Module

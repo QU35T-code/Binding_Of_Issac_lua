@@ -18,6 +18,7 @@ local fileMenu = require("menu")
 local fileOptions = require("options")
 local filePlayerCreation = require("player_creation")
 local fileMonsterCreation = require("monster_creation")
+local fileOptionsControls = require("controls")
 
 function love.load()
   screen_width = love.graphics.getWidth()
@@ -30,6 +31,7 @@ function love.load()
   fileGameOver.load_my_GameOver()
   filePlayerCreation.create_my_Player("Unknown")
   fileMonsterCreation.load_my_Monster("oeil", 5)
+  fileOptionsControls.load_my_Controls()
 end
 
 function init_my_game()
@@ -38,8 +40,9 @@ function init_my_game()
 	gameState.menu = false
 	gameState.pause = false
 	gameState.options = false
-	gameState.game = true
+	gameState.game = false
 	gameState.gameOver = false
+	gameState.controls = true
 	pause_pointeurX = 570
 	pause_pointeurY = 510
 	menu_pointeurX = 455
@@ -62,7 +65,6 @@ function love.update(dt)
 end
 
 function love.draw()
-	--[[love.graphics.setBackgroundColor(1, 1, 1)--]]
 	if gameState.preMenu then
 		filePreMenu.draw_my_preMenu()
 	end
@@ -88,6 +90,9 @@ function love.draw()
 		love.graphics.print("Chance : " .. playerStats.luck, 0, 60)
 		fileMonsterCreation.draw_my_Monster()
 	end
+	if gameState.controls then
+		fileOptionsControls.draw_my_Controls()
+	end
 
 end
 
@@ -107,9 +112,8 @@ function love.keypressed(key)
 	if gameState.gameOver then
 		fileGameOver.keypressed_my_GameOver(key)		
 	end
-	if gameState.game then
-		fileMonsterCreation.keyok(key)
-	end
+	--[[if gameState.game then
+	end--]]
 end
 
 function love.keyreleased(key)
