@@ -55,7 +55,7 @@ function love.update(dt)
 end
 
 function love.draw()
-	love.graphics.setBackgroundColor(1, 1, 1)
+	--[[love.graphics.setBackgroundColor(1, 1, 1)--]]
 	if gameState.preMenu then
 		filePreMenu.draw_my_preMenu()
 	end
@@ -72,7 +72,13 @@ function love.draw()
 		fileGameOver.draw_my_GameOver()		
 	end
 	if gameState.game then
-		filePlayerCreation.draw_my_Player()		
+		filePlayerCreation.draw_my_Player()
+		love.graphics.print("Vitesse larmes : " .. playerStats.tearsSpeed, 0, 0)
+		love.graphics.print("Portée larmes : " .. playerStats.tearsScope, 0, 12)
+		love.graphics.print("Vitesse déplacement : " .. playerStats.moveSpeed, 0, 24)
+		love.graphics.print("Cadence de tir : " .. playerStats.rate, 0, 36)
+		love.graphics.print("Dégâts : " .. playerStats.damage, 0, 48)
+		love.graphics.print("Chance : " .. playerStats.luck, 0, 60)
 	end
 
 end

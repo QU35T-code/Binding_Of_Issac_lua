@@ -47,6 +47,12 @@ animation_body_settings.timePassed = 0
 
 local bulletsList = {}
 
+-- Player Stats
+
+playerStats = {}
+playerStats.table = {}
+
+
 
 -- Reset and Set Head State
 
@@ -56,6 +62,7 @@ function reset_status()
 	state.head_left = false
 	state.head_right = false
 end
+
 
 function state_attribute(value)
 	reset_status()
@@ -108,6 +115,24 @@ function Module.create_my_Player(player_name)
 	gameCharacter.y = 350
 	gameCharacter.x = 350
 	gameCharacter.speed = 1
+
+	-- Parser file Stats
+	for line in love.filesystem.lines("assets/Players/".. player_name .. "/stats.json") do
+		for name, data in line:gmatch("(.-):(.*)") do
+			playerStats.table[name] = data
+		end
+	end
+
+	-- Set parsed values (file)
+	playerStats.tearsSpeed = playerStats.table["tearsSpeed"]
+	playerStats.moveSpeed = playerStats.table["moveSpeed"]
+	playerStats.tearsScope = playerStats.table["tearsScope"]
+	playerStats.rate = playerStats.table["rate"]
+	playerStats.damage = playerStats.table["damage"]
+	playerStats.luck = playerStats.table["luck"]
+
+
+	-- Load Images
 	gameCharacter.head_down = love.graphics.newImage("assets/Players/".. player_name .. "/down.png")
 	gameCharacter.head_left = love.graphics.newImage("assets/Players/".. player_name .. "/left.png")
 	gameCharacter.head_up = love.graphics.newImage("assets/Players/".. player_name .. "/up.png")
