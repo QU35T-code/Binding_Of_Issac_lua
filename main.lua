@@ -99,6 +99,9 @@ function love.keypressed(key)
 	if gameState.gameOver then
 		fileGameOver.keypressed_my_GameOver(key)		
 	end
+	if gameState.game then
+		filePlayerCreation.keypressed_ok(key)
+	end
 end
 
 function love.keyreleased(key)

@@ -52,7 +52,9 @@ local bulletsList = {}
 playerStats = {}
 playerStats.table = {}
 
-
+-- Cadence de tir variables
+countSecond = 0
+canShoot = true
 
 -- Reset and Set Head State
 
@@ -110,12 +112,6 @@ end
 
 
 function Module.create_my_Player(player_name)
-	-- Load and setup my character
-	gameCharacter = {}
-	gameCharacter.y = 350
-	gameCharacter.x = 350
-	gameCharacter.speed = 1
-
 	-- Parser file Stats
 	for line in love.filesystem.lines("assets/Players/".. player_name .. "/stats.json") do
 		for name, data in line:gmatch("(.-):(.*)") do
@@ -127,9 +123,18 @@ function Module.create_my_Player(player_name)
 	playerStats.tearsSpeed = playerStats.table["tearsSpeed"]
 	playerStats.moveSpeed = playerStats.table["moveSpeed"]
 	playerStats.tearsScope = playerStats.table["tearsScope"]
+	playerStats.tearsScope = tonumber(playerStats.tearsScope)
 	playerStats.rate = playerStats.table["rate"]
 	playerStats.damage = playerStats.table["damage"]
 	playerStats.luck = playerStats.table["luck"]
+	shootDelay = tonumber(playerStats.rate)
+
+
+	-- Load and setup my character
+	gameCharacter = {}
+	gameCharacter.y = 350
+	gameCharacter.x = 350
+	gameCharacter.speed = playerStats.moveSpeed
 
 
 	-- Load Images
@@ -157,6 +162,18 @@ function Module.create_my_Player(player_name)
 		workerFrame_global.body_up[frame_body] = love.graphics.newQuad((frame_body - 1) * animation_body_settings.frameWidth, 0, animation_body_settings.frameWidth, animation_body_settings.frameHeight, gameCharacter.walk:getDimensions())
 		workerFrame_global.body_side[frame_body] = love.graphics.newQuad((frame_body - 1) * animation_body_settings.frameWidth, 0, animation_body_settings.frameWidth, animation_body_settings.frameHeight, gameCharacter.direction:getDimensions())
 		workerFrame_global.body_side_rev[frame_body] = love.graphics.newQuad((frame_body - 1) * animation_body_settings.frameWidth, 0, animation_body_settings.frameWidth, animation_body_settings.frameHeight, gameCharacter.direction_rev:getDimensions())
+	end
+end
+
+function distance ( x1, y1, x2, y2 )
+  local dx = x1 - x2
+  local dy = y1 - y2
+  return math.sqrt ( dx * dx + dy * dy )
+end
+
+function Module.keypressed_ok(key)
+	if (key == "m") then
+  		print(distance(gameCharacter.x, gameCharacter.y, bullets.x, bullets.y))
 	end
 end
 
@@ -247,7 +264,20 @@ function Module.update_my_Player(dt)
 	for bulletId, bullets in ipairs(bulletsList) do
     	bullets.x = bullets.x + bullets.speed * math.cos(bullets.direction) * dt
     	bullets.y = bullets.y + bullets.speed * math.sin(bullets.direction) * dt
+
+    	-- Portée des larmes
+	  	bullets.distance = distance(gameCharacter.x, gameCharacter.y, bullets.x, bullets.y)
+	  	if (bullets.distance > playerStats.tearsScope) then
+	  		table.remove(bulletsList, bulletId)
+	  	end
   	end
+
+  	-- Cadence de tir
+ 	countSecond = countSecond + 1 * dt
+ 	if countSecond > shootDelay then
+  		canShoot = true
+  		countSecond = 0
+	end
 end
 
 function Module.draw_my_Player()
@@ -299,21 +329,23 @@ end
 -- Bullets Shoot
 
 function shoot(x, y)
-	local bullets = {}
+	bullets = {}
   	bullets.w = 30
   	bullets.h = 30
   	bullets.r = 15
   	bullets.x = gameCharacter.x - bullets.w/2
   	bullets.y = gameCharacter.y - bullets.h/2
-  	bullets.speed = 500
+  	bullets.speed = playerStats.tearsSpeed * 300
   	bullets.direction = math.atan2(y - gameCharacter.y, x - gameCharacter.x)
+  	bullets.distance = 0
   	table.insert(bulletsList, bullets)
 
 end
 
 function love.mousepressed(x, y, button)
-  if (button == 1) then
+  if (button == 1 and canShoot) then
     shoot(x, y)
+    canShoot = false
   end
 end
 
