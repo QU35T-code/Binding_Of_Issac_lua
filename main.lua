@@ -55,6 +55,7 @@ function love.update(dt)
 end
 
 function love.draw()
+	love.graphics.setBackgroundColor(1, 1, 1)
 	if gameState.preMenu then
 		filePreMenu.draw_my_preMenu()
 	end
@@ -92,16 +93,10 @@ function love.keypressed(key)
 	if gameState.gameOver then
 		fileGameOver.keypressed_my_GameOver(key)		
 	end
-	if gameState.game then
-		filePlayerCreation.keypressed_my_Player(key)		
-	end
 end
 
 function love.keyreleased(key)
 	if gameState.menu then
 		fileMenu.keyreleased_my_Menu(key)
-	end
-	if gameState.game then
-		filePlayerCreation.keyreleased_my_Player(key)
 	end
 end
