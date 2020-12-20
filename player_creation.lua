@@ -8,6 +8,8 @@ workerFrame_global.tete_right = {}
 
 -- Body Variable
 workerFrame_global.body_up = {}
+workerFrame_global.body_direction = {}
+workerFrame_global.body_direction_rev = {}
 
 local state = {}
 state.head_up = false
@@ -20,6 +22,9 @@ state.body_up = false
 state.body_down = false
 state.body_left = false
 state.body_right = false
+state.body_idle_front = true
+state.body_idle_side = false
+state.body_idle_side_rev = false
 
 local animation_head_settings = {}
 animation_head_settings.frameWidth = 32
@@ -31,7 +36,7 @@ animation_head_settings.timePassed = 0
 
 
 local animation_settings = {}
-animation_settings.frameWidth = 19
+animation_settings.frameWidth = 18
 animation_settings.frameHeight = 15
 animation_settings.totalFrames = 10
 animation_settings.currentFrame = 1
@@ -52,7 +57,9 @@ function reset_status_body()
 	state.body_down = false
 	state.body_left = false
 	state.body_right = false
-	state.body_idle = false
+	state.body_idle_front = false
+	state.body_idle_side = false
+	state.body_idle_side_rev = false
 end
 
 
@@ -67,6 +74,8 @@ function Module.create_my_Player(player_name)
 	gameCharacter.head_up = love.graphics.newImage("assets/Players/".. player_name .. "/up.png")
 	gameCharacter.head_right = love.graphics.newImage("assets/Players/".. player_name .. "/right.png")
 	gameCharacter.walk = love.graphics.newImage("assets/Players/".. player_name .. "/walk.png")
+	gameCharacter.direction = love.graphics.newImage("assets/Players/".. player_name .. "/direction.png")
+	gameCharacter.direction_rev = love.graphics.newImage("assets/Players/".. player_name .. "/direction_rev.png")
 
 	-- Load Tears
 	gameCharacter.tears = love.graphics.newImage("assets/Game/tears.png")
@@ -82,6 +91,8 @@ function Module.create_my_Player(player_name)
 	-- Load Body Player on table
 	for frame_body = 1, animation_settings.totalFrames do
 		workerFrame_global.body_up[frame_body] = love.graphics.newQuad((frame_body - 1) * animation_settings.frameWidth, 0, animation_settings.frameWidth, animation_settings.frameHeight, gameCharacter.walk:getDimensions())
+		workerFrame_global.body_direction[frame_body] = love.graphics.newQuad((frame_body - 1) * animation_settings.frameWidth, 0, animation_settings.frameWidth, animation_settings.frameHeight, gameCharacter.direction:getDimensions())
+		workerFrame_global.body_direction_rev[frame_body] = love.graphics.newQuad((frame_body - 1) * animation_settings.frameWidth, 0, animation_settings.frameWidth, animation_settings.frameHeight, gameCharacter.direction_rev:getDimensions())
 	end
 end
 
@@ -89,9 +100,11 @@ end
 function Module.keyreleased_my_Player(key)
 	if (key == 'z') then
 		state.body_up = false
+		state.body_idle_front = true
 	end
 	if (key == 's') then
 		state.body_down = false
+		state.body_idle_front = true
 	end
 	if (key == 'q') then
 		state.body_left = false
@@ -103,19 +116,15 @@ end
 
 function Module.keypressed_my_Player(key)
 	if love.keyboard.isDown("z") then
+		state.body_idle_front = false
 		state_attribute_body(1)
 	elseif love.keyboard.isDown("s") then
+		state.body_idle_front = false
 		state_attribute_body(2)
 	elseif love.keyboard.isDown("q") then
 		state_attribute_body(3)
 	elseif love.keyboard.isDown("d") then
 		state_attribute_body(4)
-	elseif love.keyboard.isDown("m") then
-		print(state.body_up)
-		gameCharacter.y = 0
-		--[[print("body down : " .. state.body_down)
-		print("body left : " .. state.body_up)
-		print("body right : " .. state.body_up)--]]
 	end
 end
 
@@ -124,7 +133,8 @@ function movement(dt)
 		timePassed(dt)
 		function love.keyreleased(key)
 			if (key == 'z') then
-				state.body_up = false
+				reset_status_body()
+				state.body_idle_front = true
 			end
 		end
 	end
@@ -132,7 +142,9 @@ function movement(dt)
 		timePassed(dt)
 		function love.keyreleased(key)
 			if (key == 's') then
-				state_attribute_body(2)
+				reset_status_body()
+				state.body_idle_front = true
+				--[[state_attribute_body(2)--]]
 			end
 		end
 	end
@@ -140,7 +152,10 @@ function movement(dt)
 		timePassed(dt)
 		function love.keyreleased(key)
 			if (key == 'q') then
-				state_attribute_body(3)
+				reset_status_body()
+				state.body_idle_side_rev = true
+
+				--[[state_attribute_body(3)--]]
 			end
 		end
 	end
@@ -148,7 +163,9 @@ function movement(dt)
 		timePassed(dt)
 		function love.keyreleased(key)
 			if (key == 'd') then
-				state_attribute_body(4)
+				reset_status_body()
+				state.body_idle_side = true
+				--[[state_attribute_body(4)--]]
 			end
 		end
 	end
@@ -166,15 +183,19 @@ function Module.update_my_Player(dt)
 	movement(dt)
 	if love.keyboard.isDown("z") then
 		gameCharacter.y = gameCharacter.y - gameCharacter.speed
+		state.body_up = true
 	end	
 	if love.keyboard.isDown("s") then
 		gameCharacter.y = gameCharacter.y + gameCharacter.speed
+		state.body_down = true
 	end	
 	if love.keyboard.isDown("q") then
 		gameCharacter.x = gameCharacter.x - gameCharacter.speed
+		state.body_left = true
 	end	
 	if love.keyboard.isDown("d") then
 		gameCharacter.x = gameCharacter.x + gameCharacter.speed
+		state.body_right = true
 	end
 
 	-- Mouse direction Head Player
@@ -236,15 +257,27 @@ function Module.draw_my_Player()
   	end
 
   	-- Direction Player
-	if (state.body_up) then
-		love.graphics.draw(gameCharacter.walk, workerFrame_global.body_up[animation_settings.currentFrame], gameCharacter.x + 14, gameCharacter.y + 55, 0, 2.7, 2.7)
-	end
-	if (state.body_down) then
-		love.graphics.draw(gameCharacter.walk, workerFrame_global.body_up[animation_settings.currentFrame], gameCharacter.x + 14, gameCharacter.y + 55, 0, 2.7, 2.7)
+	if (state.body_up or state.body_down) then
+		love.graphics.draw(gameCharacter.walk, workerFrame_global.body_up[animation_settings.currentFrame], gameCharacter.x + 14, gameCharacter.y + 53, 0, 2.7, 2.7)
 	end
 
-	if (state.body_idle) then
-		love.graphics.draw(gameCharacter.walk, workerFrame_global.body_up[1], gameCharacter.x + 14, gameCharacter.y + 55, 0, 2.7, 2.7)
+	if (state.body_right) then
+		love.graphics.draw(gameCharacter.direction, workerFrame_global.body_direction[animation_settings.currentFrame], gameCharacter.x + 14, gameCharacter.y + 53, 0, 2.7, 2.7)
+	end
+
+	if (state.body_left) then
+		love.graphics.draw(gameCharacter.direction_rev, workerFrame_global.body_direction[animation_settings.currentFrame], gameCharacter.x + 14, gameCharacter.y + 53, 0, 2.7, 2.7)
+	end
+
+	if (state.body_idle_front) then
+		love.graphics.draw(gameCharacter.walk, workerFrame_global.body_up[1], gameCharacter.x + 14, gameCharacter.y + 53, 0, 2.7, 2.7)
+	end
+
+	if (state.body_idle_side) then
+		love.graphics.draw(gameCharacter.walk, workerFrame_global.body_up[1], gameCharacter.x + 14, gameCharacter.y + 53, 0, 2.7, 2.7)
+	end
+	if (state.body_idle_side_rev) then
+		love.graphics.draw(gameCharacter.walk, workerFrame_global.body_up[1], gameCharacter.x + 14, gameCharacter.y + 53, 0, 2.7, 2.7)
 	end
 
   	-- Head Player
@@ -260,17 +293,6 @@ function Module.draw_my_Player()
 	if (state.head_right) then
 		love.graphics.draw(gameCharacter.head_right, workerFrame_global.tete_right[animation_head_settings.currentFrame], gameCharacter.x, gameCharacter.y, 0, 2.7, 2.7)
 	end
-
-	
-	--[[if (state.body_down) then
-		love.graphics.draw(gameCharacter.body_down, workerFrame_global.tete_down[animation_head_settings.currentFrame], gameCharacter.x, gameCharacter.y, 0, 2.7, 2.7)
-	end
-	if (state.body_left) then
-		love.graphics.draw(gameCharacter.body_left, workerFrame_global.tete_left[animation_head_settings.currentFrame], gameCharacter.x, gameCharacter.y, 0, 2.7, 2.7)
-	end
-	if (state.body_right) then
-		love.graphics.draw(gameCharacter.body_right, workerFrame_global.tete_right[animation_head_settings.currentFrame], gameCharacter.x, gameCharacter.y, 0, 2.7, 2.7)
-	end--]]
 end
 
 -- Bullets
