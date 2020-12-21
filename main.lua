@@ -67,6 +67,7 @@ function love.update(dt)
 	if gameState.game then
 		filePlayerCreation.update_my_Player(dt)
 		fileMonsterCreation.update_my_Monster(dt)
+		fileRooms.update_my_Rooms(dt)
 	end
 	if gameState.controls then
 		fileOptionsControls.update_my_Controls()
