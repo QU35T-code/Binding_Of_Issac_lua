@@ -120,6 +120,14 @@ function love.keypressed(key)
 	if gameState.controls then
 		fileOptionsControls.keypressed_my_Controls(key)
 	end
+	if (key == 'm') then
+		print("----------------")
+		print(menu_check_keyreleased)
+		print(options_check_keyreleased)
+		print(controls_check_keyreleased)
+		print("----------------")
+
+	end
 end
 
 function love.keyreleased(key)
@@ -131,5 +139,14 @@ function love.keyreleased(key)
 	end
 	if gameState.controls then
 		fileOptionsControls.keyreleased_my_Controls(key)
+	end
+end
+
+function love.mousepressed(x, y, button)
+	if gameState.game then
+		filePlayerCreation.player_mousepressed(x, y, button)
+	end
+	if gameState.controls then
+		fileOptionsControls.controls_mousepressed(x, y, button)
 	end
 end

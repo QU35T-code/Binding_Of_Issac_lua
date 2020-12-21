@@ -35,6 +35,8 @@ end
 function Module.keyreleased_my_Options(key)
   if (key == "return" and options_check_keyreleased == 1) then
     options_check_keyreleased = 0
+    menu_check_keyreleased = 1
+    controls_check_keyreleased = 1
   end
 end
 
@@ -95,6 +97,14 @@ function Module.keypressed_my_options(key)
   if (key == 'return' and options_pointeurY == 179 and options_check_keyreleased == 0) then
     gameState.options = false
     gameState.controls = true
+  end
+
+  if (key == "escape") then
+    gameState.options = false
+    gameState.menu = true
+    options_check_keyreleased = 1
+    controls_check_keyreleased = 1
+    menu_check_keyreleased = 0
   end
 
 end

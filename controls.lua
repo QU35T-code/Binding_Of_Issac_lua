@@ -28,6 +28,8 @@ end
 function Module.keyreleased_my_Controls(key)
   if (key == "return" and controls_check_keyreleased == 1) then
     controls_check_keyreleased = 0
+    options_check_keyreleased = 1
+    menu_check_keyreleased = 1
   end
 end
 
@@ -62,7 +64,7 @@ function Module.keypressed_my_Controls(key)
         check_up_select = true
       end
     end
-  elseif (key == 'return' and controls_pointeurY == 212) then
+  elseif (key == 'return' and controls_pointeurY == 212 and controls_check_keyreleased == 0) then
     controls_pointeurX = controls_valueX + 220
     controls_pointeurRotation = 60
     controls_pointeurY = 214
@@ -72,7 +74,7 @@ function Module.keypressed_my_Controls(key)
         check_down_select = true
       end
     end
-  elseif (key == 'return' and controls_pointeurY == 261) then
+  elseif (key == 'return' and controls_pointeurY == 261 and controls_check_keyreleased == 0) then
     controls_pointeurX = controls_valueX + 220
     controls_pointeurRotation = 60
     controls_pointeurY = 263
@@ -82,7 +84,7 @@ function Module.keypressed_my_Controls(key)
         check_left_select = true
       end
     end
-  elseif (key == 'return' and controls_pointeurY == 312) then
+  elseif (key == 'return' and controls_pointeurY == 312 and controls_check_keyreleased == 0) then
     controls_pointeurX = controls_valueX + 220
     controls_pointeurRotation = 60
     controls_pointeurY = 314
@@ -157,6 +159,14 @@ function Module.keypressed_my_Controls(key)
     controls_pointeurX = 220
   end
 
+  if (key == "escape") then
+    gameState.controls = false
+    gameState.options = true
+    controls_check_keyreleased = 1
+    options_check_keyreleased = 0
+    menu_check_keyreleased = 1
+  end
+
   
 end
 
@@ -197,7 +207,7 @@ function Module.draw_my_Controls()
   
 end
 
-function love.mousepressed(x, y, button)
+function Module.controls_mousepressed(x, y, button)
   if (button == 1 and canIReset) then
     Keybinds.up = Keybinds.default_up
     Keybinds.down = Keybinds.default_down

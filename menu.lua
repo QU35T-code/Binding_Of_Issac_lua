@@ -10,6 +10,8 @@ end
 function Module.keyreleased_my_Menu(key)
 	if (key == "return" and menu_check_keyreleased == 1) then
 		menu_check_keyreleased = 0
+		options_check_keyreleased = 1
+		controls_check_keyreleased = 1
 	end
 end
 

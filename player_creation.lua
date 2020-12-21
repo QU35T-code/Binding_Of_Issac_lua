@@ -337,7 +337,7 @@ function shoot(x, y)
 
 end
 
-function love.mousepressed(x, y, button)
+function Module.player_mousepressed(x, y, button)
   if (button == 1 and canShoot) then
     shoot(x, y)
     canShoot = false
