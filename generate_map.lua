@@ -1,6 +1,6 @@
 local Module = {}
 
-local donjon = {}
+donjon = {}
 donjon.nbLines = 6
 donjon.nbColumn = 9
 donjon.map = {}
@@ -104,7 +104,7 @@ function Module.keypressed_my_Map(key)
 	end
 end
 
-function Module.draw_my_Map()
+donjon.drawMapDonjon = function(pRoom)
 	local x = 5
 	local y = 5
 	local Case_Width = 34
@@ -119,7 +119,7 @@ function Module.draw_my_Map()
 				love.graphics.setColor(0.5, 0.5, 0.5)
 				love.graphics.rectangle("fill", x, y, Case_Width, Case_Height)
 			else
-				if (donjon.StartRoom == Room) then
+				if (pRoom == Room) then
 					love.graphics.setColor(0, 1, 0)
 				else
 					love.graphics.setColor(1, 1, 1)
@@ -145,6 +145,7 @@ function Module.draw_my_Map()
 		end
 		y = y + Case_Height + Space_between
 	end
+	love.graphics.setColor(1, 1, 1)
 end
 
 return Module

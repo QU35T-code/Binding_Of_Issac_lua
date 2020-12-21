@@ -20,6 +20,7 @@ local filePlayerCreation = require("player_creation")
 local fileMonsterCreation = require("monster_creation")
 local fileOptionsControls = require("controls")
 local fileGenerateMap = require("generate_map")
+local fileRooms = require("rooms")
 
 function love.load()
   screen_width = love.graphics.getWidth()
@@ -34,6 +35,7 @@ function love.load()
   fileMonsterCreation.load_my_Monster("oeil", 5)
   fileOptionsControls.load_my_Controls()
   fileGenerateMap.load_my_Map()
+  fileRooms.load_my_Rooms()
 end
 
 function init_my_game()
@@ -42,7 +44,7 @@ function init_my_game()
 	gameState.menu = false
 	gameState.pause = false
 	gameState.options = false
-	gameState.game = false
+	gameState.game = true
 	gameState.gameOver = false
 	gameState.controls = false
 	gameState.map = false
@@ -90,19 +92,18 @@ function love.draw()
 	end
 	if gameState.game then
 		filePlayerCreation.draw_my_Player()
-		love.graphics.print("Vitesse larmes : " .. playerStats.tearsSpeed, 0, 0)
-		love.graphics.print("Portée larmes : " .. playerStats.tearsScope, 0, 12)
-		love.graphics.print("Vitesse déplacement : " .. playerStats.moveSpeed, 0, 24)
-		love.graphics.print("Cadence de tir : " .. playerStats.rate, 0, 36)
-		love.graphics.print("Dégâts : " .. playerStats.damage, 0, 48)
-		love.graphics.print("Chance : " .. playerStats.luck, 0, 60)
+		love.graphics.print("Vitesse larmes : " .. playerStats.tearsSpeed, 0, 130)
+		love.graphics.print("Portée larmes : " .. playerStats.tearsScope, 0, 140)
+		love.graphics.print("Vitesse déplacement : " .. playerStats.moveSpeed, 0, 150)
+		love.graphics.print("Cadence de tir : " .. playerStats.rate, 0, 160)
+		love.graphics.print("Dégâts : " .. playerStats.damage, 0, 170)
+		love.graphics.print("Chance : " .. playerStats.luck, 0, 180)
 		fileMonsterCreation.draw_my_Monster()
+		--[[fileGenerateMap.draw_my_Map()--]]
+		fileRooms.draw_my_Rooms()
 	end
 	if gameState.controls then
 		fileOptionsControls.draw_my_Controls()
-	end
-	if gameState.map then
-		fileGenerateMap.draw_my_Map()
 	end
 
 end
@@ -134,7 +135,7 @@ function love.keypressed(key)
 		print("----------------")
 
 	end
-	if gameState.map then
+	if gameState.game then
 		fileGenerateMap.keypressed_my_Map(key)
 	end
 end
