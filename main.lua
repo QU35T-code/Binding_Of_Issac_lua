@@ -19,6 +19,7 @@ local fileOptions = require("options")
 local filePlayerCreation = require("player_creation")
 local fileMonsterCreation = require("monster_creation")
 local fileOptionsControls = require("controls")
+local fileGenerateMap = require("generate_map")
 
 function love.load()
   screen_width = love.graphics.getWidth()
@@ -32,17 +33,19 @@ function love.load()
   filePlayerCreation.create_my_Player("Unknown")
   fileMonsterCreation.load_my_Monster("oeil", 5)
   fileOptionsControls.load_my_Controls()
+  fileGenerateMap.load_my_Map()
 end
 
 function init_my_game()
 	gameState = {}
-	gameState.preMenu = true
+	gameState.preMenu = false
 	gameState.menu = false
 	gameState.pause = false
 	gameState.options = false
 	gameState.game = false
 	gameState.gameOver = false
 	gameState.controls = false
+	gameState.map = true
 	pause_pointeurX = 570
 	pause_pointeurY = 510
 	menu_pointeurX = 455
@@ -98,6 +101,9 @@ function love.draw()
 	if gameState.controls then
 		fileOptionsControls.draw_my_Controls()
 	end
+	if gameState.map then
+		fileGenerateMap.draw_my_Map()
+	end
 
 end
 
@@ -127,6 +133,9 @@ function love.keypressed(key)
 		print(controls_check_keyreleased)
 		print("----------------")
 
+	end
+	if gameState.map then
+		fileGenerateMap.keypressed_my_Map(key)
 	end
 end
 
