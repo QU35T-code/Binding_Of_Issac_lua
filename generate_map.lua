@@ -5,6 +5,7 @@ donjon.nbLines = 6
 donjon.nbColumn = 9
 donjon.map = {}
 donjon.StartRoom = nil
+display_doors = false
 
 
 function Create_Room(line, column)
@@ -95,6 +96,12 @@ function Module.keypressed_my_Map(key)
 	if (key == 'space') then
 		Generate_donjon()
 	end
+	if (key == 'h') then
+		display_doors = true
+	end
+	if (key == 'l') then
+		display_doors = false
+	end
 end
 
 function Module.draw_my_Map()
@@ -107,16 +114,32 @@ function Module.draw_my_Map()
 	for line = 1, donjon.nbLines do
 		x = 5
 		for column = 1, donjon.nbColumn do
-			if donjon.map[line][column].isOpen == false then
+			local Room = donjon.map[line][column]
+			if Room.isOpen == false then
 				love.graphics.setColor(0.5, 0.5, 0.5)
 				love.graphics.rectangle("fill", x, y, Case_Width, Case_Height)
 			else
-				if (donjon.StartRoom == donjon.map[line][column]) then
+				if (donjon.StartRoom == Room) then
 					love.graphics.setColor(0, 1, 0)
 				else
 					love.graphics.setColor(1, 1, 1)
 				end
 				love.graphics.rectangle("fill", x, y, Case_Width, Case_Height)
+				if (display_doors) then
+					love.graphics.setColor(1, 0, 0)
+					if Room.Up_Door then
+						love.graphics.rectangle("fill", (x + Case_Width / 2) - 2, y - 2, 4, 6)
+					end
+					if Room.Down_Door then
+						love.graphics.rectangle("fill", (x + Case_Width / 2) - 2, (y + Case_Height) - 2, 4, 6)
+					end
+					if Room.Left_Door then
+						love.graphics.rectangle("fill", (x - 2), (y + Case_Height/2) - 2, 6, 4)
+					end
+					if Room.Right_Door then
+						love.graphics.rectangle("fill", (x + Case_Width) - 2, (y + Case_Height/2) - 2, 6, 4)
+					end
+				end
 			end
 			x = x + Case_Width + Space_between
 		end
