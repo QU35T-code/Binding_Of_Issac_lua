@@ -133,6 +133,8 @@ function Module.create_my_Player(player_name)
 	gameCharacter = {}
 	gameCharacter.y = 350
 	gameCharacter.x = 350
+	gameCharacter.vx = 0
+	gameCharacter.vy = 0
 	gameCharacter.speed = playerStats.moveSpeed
 
 
@@ -214,26 +216,34 @@ function timePassed(dt)
 end
 
 function Module.update_my_Player(dt)
+	gameCharacter.vx = gameCharacter.vx * .9
+	gameCharacter.vy = gameCharacter.vy * .9
+	if math.abs(gameCharacter.vx) < 0.01 then gameCharacter.vx = 0 end
+	if math.abs(gameCharacter.vy) < 0.01 then gameCharacter.vy = 0 end
+
+	gameCharacter.x = gameCharacter.x + gameCharacter.vx
+	gameCharacter.y = gameCharacter.y + gameCharacter.vy
+
 	movement_animation(dt)
 	if love.keyboard.isDown(Keybinds.up) then
-		gameCharacter.y = gameCharacter.y - gameCharacter.speed
+		gameCharacter.vy = gameCharacter.vy - gameCharacter.speed / 6
 		state.body_up = true
 		state.body_idle_front = false
 		state_attribute_body(1)
 	end	
 	if love.keyboard.isDown(Keybinds.down) then
-		gameCharacter.y = gameCharacter.y + gameCharacter.speed
+		gameCharacter.vy = gameCharacter.vy + gameCharacter.speed / 6
 		state.body_down = true
 		state.body_idle_front = false
 		state_attribute_body(2)
 	end	
 	if love.keyboard.isDown(Keybinds.left) then
-		gameCharacter.x = gameCharacter.x - gameCharacter.speed
+		gameCharacter.vx = gameCharacter.vx - gameCharacter.speed / 6
 		state.body_left = true
 		state_attribute_body(3)
 	end	
 	if love.keyboard.isDown(Keybinds.right) then
-		gameCharacter.x = gameCharacter.x + gameCharacter.speed
+		gameCharacter.vx = gameCharacter.vx + gameCharacter.speed / 6
 		state.body_right = true
 		state_attribute_body(4)
 	end

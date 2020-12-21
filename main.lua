@@ -45,7 +45,7 @@ function init_my_game()
 	gameState.game = false
 	gameState.gameOver = false
 	gameState.controls = false
-	gameState.map = true
+	gameState.map = false
 	pause_pointeurX = 570
 	pause_pointeurY = 510
 	menu_pointeurX = 455
