@@ -36,13 +36,13 @@ end
 
 function init_my_game()
 	gameState = {}
-	gameState.preMenu = false
+	gameState.preMenu = true
 	gameState.menu = false
 	gameState.pause = false
 	gameState.options = false
 	gameState.game = false
 	gameState.gameOver = false
-	gameState.controls = true
+	gameState.controls = false
 	pause_pointeurX = 570
 	pause_pointeurY = 510
 	menu_pointeurX = 455
@@ -50,6 +50,8 @@ function init_my_game()
 	options_pointeurX = 442
 	options_pointeurY = 179
 	menu_check_keyreleased = 1
+	options_check_keyreleased = 1
+	controls_check_keyreleased = 1
 end
 
 
@@ -60,6 +62,9 @@ function love.update(dt)
 	if gameState.game then
 		filePlayerCreation.update_my_Player(dt)
 		fileMonsterCreation.update_my_Monster(dt)
+	end
+	if gameState.controls then
+		fileOptionsControls.update_my_Controls()
 	end
 
 end
@@ -112,12 +117,19 @@ function love.keypressed(key)
 	if gameState.gameOver then
 		fileGameOver.keypressed_my_GameOver(key)		
 	end
-	--[[if gameState.game then
-	end--]]
+	if gameState.controls then
+		fileOptionsControls.keypressed_my_Controls(key)
+	end
 end
 
 function love.keyreleased(key)
 	if gameState.menu then
 		fileMenu.keyreleased_my_Menu(key)
+	end
+	if gameState.options then
+		fileOptions.keyreleased_my_Options(key)
+	end
+	if gameState.controls then
+		fileOptionsControls.keyreleased_my_Controls(key)
 	end
 end

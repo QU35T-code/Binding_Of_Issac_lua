@@ -42,6 +42,8 @@ function Module.keypressed_my_Menu(key)
 	elseif (key == 'return' and menu_pointeurY == 436 and menu_check_keyreleased == 0) then
 		print("Not Up (Stats)")
 	elseif (key == 'return' and menu_pointeurY == 530 and menu_check_keyreleased == 0) then
+		gameState.menu = false
+		gameState.options = true
 		print("Not Up (Options)")
 	end
 end

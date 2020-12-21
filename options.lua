@@ -15,7 +15,6 @@ function Module.load_my_options()
 	optionsSelect = love.graphics.newImage("assets/Scenes/Options/select.png")
 	optionsOverlay = love.graphics.newImage("assets/Scenes/Options/overlay.png")
 	optionsShadow = love.graphics.newImage("assets/Scenes/Options/shadow.png")
-  attente = true
 end
 
 function Module.draw_my_options()
@@ -32,6 +31,13 @@ function Module.draw_my_options()
 	love.graphics.draw(optionsOverlay, 0, 0, 0, 2.7, 2.7)
 	love.graphics.draw(optionsShadow, 0, 350, 0, 2.7, 2.7)
 end
+
+function Module.keyreleased_my_Options(key)
+  if (key == "return" and options_check_keyreleased == 1) then
+    options_check_keyreleased = 0
+  end
+end
+
 
 function Module.keypressed_my_options(key)
 	if (key == Keybinds.up and options_pointeurY == 179) then
@@ -86,19 +92,9 @@ function Module.keypressed_my_options(key)
   	options_pointeurY = 597
   end
 
-  if (key == 'return' and options_pointeurY == 247) then
-    print("up : ")
-    function love.keyreleased(key)
-      if (key == 'return') then
-        attente = false
-      end
-    end
-  end
-
-  if (attente == false) then
-      Keybinds.up = key
-      print("correcty assign : " .. Keybinds.up)
-      attente = true
+  if (key == 'return' and options_pointeurY == 179 and options_check_keyreleased == 0) then
+    gameState.options = false
+    gameState.controls = true
   end
 
 end
