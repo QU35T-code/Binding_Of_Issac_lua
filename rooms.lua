@@ -13,14 +13,15 @@ function collide_Door(pX, pY)
 	return ""
 end
 
-function create_Door(pType, pX, pY, pWidth, pHeight)
+function create_Door(pType, pX, pY, pRotation)
 	local newDoor = {}
 
 	newDoor.x = pX
 	newDoor.y = pY
-	newDoor.Width = pWidth
-	newDoor.Height = pHeight
+	newDoor.Width = 49
+	newDoor.Height = 33
 	newDoor.type = pType
+	newDoor.Rotation = pRotation
 
 	return newDoor
 end
@@ -31,25 +32,26 @@ function prepare_my_Room(pRoom)
 	hauteur_tuile = 40
 
 	if pRoom.Up_Door then
-		local door = create_Door("Up_Door", (screen_width / 2) - largeur_tuile, 0, largeur_tuile * 2, hauteur_tuile * 2)
+		local door = create_Door("Up_Door", (screen_width / 2) - largeur_tuile, 0, 0)
 		table.insert(ListDoors, door)
 	end
 	if pRoom.Down_Door then
-		local door = create_Door("Down_Door", (screen_width / 2) - largeur_tuile, screen_height - (hauteur_tuile * 2), largeur_tuile * 2, hauteur_tuile * 2)
+		local door = create_Door("Down_Door", (screen_width / 2) - largeur_tuile, screen_height - (hauteur_tuile * 2), -3.14159)
 		table.insert(ListDoors, door)
 	end
 	if pRoom.Left_Door then
-		local door = create_Door("Left_Door", 0, (screen_height / 2) - hauteur_tuile, largeur_tuile * 2, hauteur_tuile * 2)
+		local door = create_Door("Left_Door", 0, (screen_height / 2) - hauteur_tuile, -1.5708)
 		table.insert(ListDoors, door)
 	end
 	if pRoom.Right_Door then
-		local door = create_Door("Right_Door", screen_width - (largeur_tuile * 2), (screen_height / 2) - hauteur_tuile, largeur_tuile * 2, hauteur_tuile * 2)
+		local door = create_Door("Right_Door", screen_width - (largeur_tuile * 2), (screen_height / 2) - hauteur_tuile, 1.5708)
 		table.insert(ListDoors, door)
 	end
 	CurrentRoom.Room = pRoom
 end
 
 function Module.load_my_Rooms()
+	doorSprite = love.graphics.newImage("assets/Game/Map/door.png")
 	prepare_my_Room(donjon.StartRoom)
 end
 
@@ -88,7 +90,9 @@ function Module.draw_my_Rooms()
 	donjon.drawMapDonjon(CurrentRoom.Room)
 	for nDoor = 1, #ListDoors do
 		local p = ListDoors[nDoor]
-		love.graphics.rectangle("line", p.x, p.y, p.Width, p.Height)
+		love.graphics.draw(doorSprite, p.x, p.y, p.Rotation, 2.5, 2.5, 49/2, 33/2) --[[ 1.5708 droite--]] --[[ 0 haut--]] --[[-3,14159 bas--]] --[[ -1,5708 Gauche--]]
+		--[[love.graphics.rectangle("line", p.x, p.y, p.Width, p.Height)--]]
+		--[[love.graphics.rectangle(mode, x, y, width, height)--]]
 	end
 end
 
