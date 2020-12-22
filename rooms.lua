@@ -18,8 +18,8 @@ function create_Door(pType, pX, pY, pRotation)
 
 	newDoor.x = pX
 	newDoor.y = pY
-	newDoor.Width = 49
-	newDoor.Height = 33
+	newDoor.Width = 122.5
+	newDoor.Height = 82.5
 	newDoor.type = pType
 	newDoor.Rotation = pRotation
 
@@ -90,9 +90,7 @@ function Module.draw_my_Rooms()
 	donjon.drawMapDonjon(CurrentRoom.Room)
 	for nDoor = 1, #ListDoors do
 		local p = ListDoors[nDoor]
-		love.graphics.draw(doorSprite, p.x, p.y, p.Rotation, 2.5, 2.5, 49/2, 33/2) --[[ 1.5708 droite--]] --[[ 0 haut--]] --[[-3,14159 bas--]] --[[ -1,5708 Gauche--]]
-		--[[love.graphics.rectangle("line", p.x, p.y, p.Width, p.Height)--]]
-		--[[love.graphics.rectangle(mode, x, y, width, height)--]]
+		love.graphics.draw(doorSprite, p.x, p.y, p.Rotation, 2.5, 2.5)
 	end
 end
 
